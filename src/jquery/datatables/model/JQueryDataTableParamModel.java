@@ -47,4 +47,13 @@ public class JQueryDataTableParamModel {
     /// Comma separated list of column names
     /// </summary>
     public String sColumns;
+
+    @Override
+    public String toString() {
+        return "JQueryDataTableParamModel [sEcho=" + sEcho + ", sSearch=" + sSearch + ", iDisplayLength="
+                + iDisplayLength + ", iDisplayStart=" + iDisplayStart + ", iColumns=" + iColumns + ", iSortingCols="
+                + iSortingCols + ", iSortColumnIndex=" + iSortColumnIndex + ", sSortDirection=" + sSortDirection
+                + ", sColumns=" + sColumns + "]";
+    }
+
 }
