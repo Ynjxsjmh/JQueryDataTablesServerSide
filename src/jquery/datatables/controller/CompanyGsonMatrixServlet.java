@@ -43,6 +43,8 @@ public class CompanyGsonMatrixServlet extends HttpServlet {
 
         JQueryDataTableParamModel param = DataTablesParamUtility.getParam(request);
 
+        System.out.println("CompanyGsonMatrixServlet.doGet() [param=" + param + "]");
+
         String sEcho = param.sEcho;
         int iTotalRecords; // total number of records (unfiltered)
         int iTotalDisplayRecords; // value will be set when code filters companies by keyword
