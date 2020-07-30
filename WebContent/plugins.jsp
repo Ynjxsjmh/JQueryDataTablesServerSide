@@ -6,10 +6,7 @@
     <head>
         <title>Applying JQuery DataTables plugin in the Java Server application</title>
         <link href="media/dataTables/demo_page.css" rel="stylesheet" type="text/css" />
-        <link href="media/dataTables/demo_table.css" rel="stylesheet" type="text/css" />
-        <link href="media/dataTables/demo_table_jui.css" rel="stylesheet" type="text/css" />
-        <link href="media/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" media="all" />
-        <link href="media/themes/smoothness/jquery-ui-1.7.2.custom.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="media/dataTables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
         <link href="media/dataTables/ColumnFilterWidgets.css" rel="stylesheet" type="text/css" />
         <script src="scripts/jquery.js" type="text/javascript"></script>
         <script src="scripts/jquery.dataTables.min.js" type="text/javascript"></script>
