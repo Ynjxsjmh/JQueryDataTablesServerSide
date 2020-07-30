@@ -15,9 +15,8 @@
         <script type="text/javascript">
         $(document).ready(function () {
             $("#companies").dataTable({
-                "sPaginationType": "full_numbers",
-                "bJQueryUI": true,
-                "sDom": 'W<"clear">lfrtip'
+                "paginationType": "full_numbers",
+                "dom": 'W<"clear">lfrtip'
             })
             .rowGrouping({sGroupBy: "letter", bHideGroupingColumn: false})
         });

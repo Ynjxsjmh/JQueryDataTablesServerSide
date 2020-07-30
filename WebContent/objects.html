@@ -9,15 +9,14 @@
         <script type="text/javascript">
 			$(document).ready(function () {
 			    $("#companies").dataTable({
-			        "bServerSide": true,
-			        "sAjaxSource": "CompanyGsonObjects",
-			        "bProcessing": true,
-			        "sPaginationType": "full_numbers",
-			        "bJQueryUI": true,
-			        "aoColumns": [
-			                      { "mDataProp": "name" },
-			                      { "mDataProp": "address" },
-			                      { "mDataProp": "town" }
+			        "serverSide": true,
+			        "ajax": "CompanyGsonObjects",
+			        "processing": true,
+			        "paginationType": "full_numbers",
+			        "columns": [
+			                      { "data": "name" },
+			                      { "data": "address" },
+			                      { "data": "town" }
 			                  ]
 			    });
 			});

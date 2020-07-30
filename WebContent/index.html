@@ -9,11 +9,10 @@
         <script type="text/javascript">
         $(document).ready(function () {
             $("#companies").dataTable({
-                "bServerSide": true,
-                "sAjaxSource": "CompanyGsonMatrix",
-                "bProcessing": true,
-                "sPaginationType": "full_numbers",
-                "bJQueryUI": true
+                "serverSide": true,
+                "ajax": "CompanyGsonMatrix",
+                "processing": true,
+                "paginationType": "full_numbers",
             });
         });
         </script>
