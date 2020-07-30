@@ -1,14 +1,13 @@
 package jquery.datatables.model;
 
 import java.util.List;
-import java.util.Map;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class JQueryDataTablesReturnedDataModel {
+public class JQueryDataTablesReturnedDataModel<T> {
     /**
      * The draw counter that this object is a response to - from the draw parameter
      * sent as part of the data request.
@@ -31,7 +30,7 @@ public class JQueryDataTablesReturnedDataModel {
      * The data to be displayed in the table. This is an array of data source
      * objects, one for each row, which will be used by DataTables.
      */
-    private List<Map<String, String>> data;
+    private List<T> data;
 
     /**
      * If an error occurs during the running of the server-side processing script,
