@@ -13,7 +13,7 @@ public class JQueryDataTablesSentParamModel {
      * Request sequence number sent by DataTable, same value must be returned in
      * response
     */
-    private String draw;
+    private int draw;
 
     /**
      * First record that should be shown(used for paging)

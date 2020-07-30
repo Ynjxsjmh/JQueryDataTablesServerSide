@@ -21,7 +21,7 @@ public class DataTablesParamUtil {
         if(parameterNames.hasMoreElements()) {
             JQueryDataTablesSentParamModel param = new JQueryDataTablesSentParamModel();
 
-            param.setDraw(request.getParameter("draw"));
+            param.setDraw(Integer.parseInt(request.getParameter("draw")));
             param.setStart(Integer.parseInt(request.getParameter("start")));
             param.setLength(Integer.parseInt(request.getParameter("length")));
 
