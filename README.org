@@ -1,0 +1,21 @@
+#+AUTHOR: Ynjxsjmh
+#+CREATOR: Winy
+#+DATE: <2020-07-30 Thu>
+#+EMAIL: ynjxsjmh@gmail
+#+TITLE: JQuery DataTables Server Side Processing Java Example
+#+OPTIONS: title:t date:t author:t email:nil timestamp:t creator:nil ;; Meta
+#+OPTIONS: toc:t num:t H:5                         ;; TOC
+#+OPTIONS: ':nil *:t |:t -:t ::t <:t \n:nil ^:{}   ;; Syntax
+#+OPTIONS: broken-links:nil inline:t
+#+OPTIONS: todo:t p:nil pri:nil stat:t tasks:t     ;; TODO
+#+OPTIONS: c:nil d:(not "LOGBOOK") prop:nil        ;; Drawer
+#+OPTIONS: arch:headline tags:t tex:t f:t e:t
+#+FILETAGS: ::
+
+
+This Eclipse project is based on project from [[https://www.codeproject.com/Articles/359750/jQuery-DataTables-in-Java-Web-Applications][jQuery DataTables in Java Web Applications]]. I upgrade it to DataTables v1.10.
+
+There are also some similar project on Github:
+
+- [[https://github.com/davioooh/datatables-pagination][davioooh/datatables-pagination: Java server-side pagination utility for DataTables jQuery plug-in]]
+- [[https://github.com/pavansolapure/opencodez-samples/tree/master/spring-boot-datatable][opencodez-samples/spring-boot-datatable at master · pavansolapure/opencodez-samples]] 
