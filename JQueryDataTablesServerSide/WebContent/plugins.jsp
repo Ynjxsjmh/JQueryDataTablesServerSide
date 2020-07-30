@@ -24,11 +24,8 @@
     </head>
     <body id="dt_example">
         <div id="container">
-        	<div id="links">
-        	    <a href="index.jsp">Client side processing</a> | Client side processing with additional plugins<br/>
-        		<a href="index.html">Server-side processing with matrix source</a>| <a href="objects.html">Server-side processing with object source</a>
-        		<br/>
-        	</div>
+            <jsp:include page="includes/nav.html"></jsp:include>
+
             <div id="demo_jui">
 		        <table id="companies" class="display">
 		            <thead>

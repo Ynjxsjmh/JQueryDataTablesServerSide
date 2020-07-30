@@ -1,4 +1,7 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"
+    import="jquery.datatables.model.*"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
     <head>
         <title>Using JQuery DataTables plugin with AJAX source implemented in Java web application</title>
@@ -19,11 +22,8 @@
     </head>
     <body id="dt_example">
         <div id="container">
-        	<div id="links">
-        	    <a href="index.jsp">Client side processing</a> | <a href="plugins.jsp">Client side processing with additional plugins</a><br/>
-        		Server-side processing with matrix source | <a href="objects.html">Server-side processing with object source</a>
-        		<br/>
-        	</div>
+            <jsp:include page="includes/nav.html"></jsp:include>
+
             <div id="demo_jui">
 		        <table id="companies" class="display">
 		            <thead>
