@@ -19,7 +19,8 @@ import com.google.gson.JsonPrimitive;
 
 import jquery.datatables.model.Company;
 import jquery.datatables.model.DataRepository;
-import jquery.datatables.model.JQueryDataTableParamModel;
+import jquery.datatables.model.JQueryDataTablesSentParamModel;
+import jquery.datatables.util.DataTablesParamUtil;
 
 /**
  * CompanyServlet provides data to the JQuery DataTables
@@ -41,28 +42,28 @@ public class CompanyGsonMatrixServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        JQueryDataTableParamModel param = DataTablesParamUtility.getParam(request);
+        JQueryDataTablesSentParamModel param = DataTablesParamUtil.getParam(request);
 
         System.out.println("CompanyGsonMatrixServlet.doGet() [param=" + param + "]");
 
-        String sEcho = param.sEcho;
-        int iTotalRecords; // total number of records (unfiltered)
-        int iTotalDisplayRecords; // value will be set when code filters companies by keyword
+        int draw = param.getDraw();
+        int recordsTotal;         // total number of records (unfiltered)
+        int recordsFiltered;      // total number of records (filtered)
         JsonArray data = new JsonArray(); // data that will be shown in the table
 
-        iTotalRecords = DataRepository.GetCompanies().size();
+        recordsTotal = DataRepository.GetCompanies().size();
         List<Company> companies = new LinkedList<Company>();
         for (Company c : DataRepository.GetCompanies()) {
-            if (c.getName().toLowerCase().contains(param.sSearch.toLowerCase())
-                    || c.getAddress().toLowerCase().contains(param.sSearch.toLowerCase())
-                    || c.getTown().toLowerCase().contains(param.sSearch.toLowerCase())) {
+            if (c.getName().toLowerCase().contains(param.getSearch().getValue().toLowerCase())
+                    || c.getAddress().toLowerCase().contains(param.getSearch().getValue().toLowerCase())
+                    || c.getTown().toLowerCase().contains(param.getSearch().getValue().toLowerCase())) {
                 companies.add(c); // add company that matches given search criterion
             }
         }
-        iTotalDisplayRecords = companies.size(); // number of companies that match search criterion should be returned
+        recordsFiltered = companies.size(); // number of companies that match search criterion should be returned
 
-        final int sortColumnIndex = param.iSortColumnIndex;
-        final int sortDirection = param.sSortDirection.equals("asc") ? -1 : 1;
+        final int sortColumnIndex = param.getOrder().get(0).getColumn();
+        final int sortDirection = param.getOrder().get(0).getDir().equals("asc") ? -1 : 1;
 
         Collections.sort(companies, new Comparator<Company>() {
             @Override
@@ -79,17 +80,17 @@ public class CompanyGsonMatrixServlet extends HttpServlet {
             }
         });
 
-        if (companies.size() < param.iDisplayStart + param.iDisplayLength) {
-            companies = companies.subList(param.iDisplayStart, companies.size());
+        if (companies.size() < param.getStart() + param.getLength()) {
+            companies = companies.subList(param.getStart(), companies.size());
         } else {
-            companies = companies.subList(param.iDisplayStart, param.iDisplayStart + param.iDisplayLength);
+            companies = companies.subList(param.getStart(), param.getStart() + param.getLength());
         }
 
         try {
             JsonObject jsonResponse = new JsonObject();
-            jsonResponse.addProperty("sEcho", sEcho);
-            jsonResponse.addProperty("iTotalRecords", iTotalRecords);
-            jsonResponse.addProperty("iTotalDisplayRecords", iTotalDisplayRecords);
+            jsonResponse.addProperty("draw", draw);
+            jsonResponse.addProperty("recordsTotal", recordsTotal);
+            jsonResponse.addProperty("recordsFiltered", recordsFiltered);
 
             for (Company c : companies) {
                 JsonArray row = new JsonArray();
@@ -98,11 +99,12 @@ public class CompanyGsonMatrixServlet extends HttpServlet {
                 row.add(new JsonPrimitive(c.getTown()));
                 data.add(row);
             }
-            jsonResponse.add("aaData", data);
+            jsonResponse.add("data", data);
 
             response.setContentType("application/Json");
             response.getWriter().print(jsonResponse.toString());
 
+            System.out.println("CompanyGsonMatrixServlet.doGet() [jsonResponse=" + jsonResponse.toString() + "]");
         } catch (JsonIOException e) {
             e.printStackTrace();
             response.setContentType("text/html");
