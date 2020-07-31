@@ -19,3 +19,4 @@ There are also some similar project on Github:
 
 - [[https://github.com/davioooh/datatables-pagination][davioooh/datatables-pagination: Java server-side pagination utility for DataTables jQuery plug-in]]
 - [[https://github.com/pavansolapure/opencodez-samples/tree/master/spring-boot-datatable][opencodez-samples/spring-boot-datatable at master · pavansolapure/opencodez-samples]] 
+- [[https://github.com/vedmack/yadcf][vedmack/yadcf: Yet Another DataTables Column Filter (yadcf)]]
