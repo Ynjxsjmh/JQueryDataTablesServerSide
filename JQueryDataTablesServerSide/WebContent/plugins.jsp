@@ -14,7 +14,7 @@
         <script src="scripts/jquery.dataTables.rowGrouping.js" type="text/javascript"></script>
         <script type="text/javascript">
         $(document).ready(function () {
-            $("#companies").dataTable({
+            $("#companies").DataTable({
                 "paginationType": "full_numbers",
                 "dom": 'W<"clear">lfrtip'
             })
