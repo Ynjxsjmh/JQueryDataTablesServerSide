@@ -2,9 +2,6 @@ package jquery.datatables.controller;
 
 import java.io.IOException;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -19,6 +16,7 @@ import jquery.datatables.model.DataRepository;
 import jquery.datatables.model.JQueryDataTablesReturnedDataModel;
 import jquery.datatables.model.JQueryDataTablesSentParamModel;
 import jquery.datatables.util.DataTablesParamUtil;
+import jquery.datatables.util.PaginationUtil;
 
 /**
  * CompanyServlet provides data to the JQuery DataTables
@@ -45,44 +43,15 @@ public class CompanyGsonObjectsServlet extends HttpServlet {
         System.out.println("CompanyGsonObjectsServlet.doGet() [param=" + new Gson().toJson(param) + "]");
 
         int draw = param.getDraw();
-        int recordsTotal;         // total number of records (unfiltered)
-        int recordsFiltered;      // total number of records (filtered)
 
-        recordsTotal = DataRepository.GetCompanies().size();
-        List<Company> companies = new LinkedList<Company>();
+        List<Company> companies = DataRepository.GetCompanies();
+        companies = PaginationUtil.logicalFilterCompanies(param, companies);
 
-        for (Company c : DataRepository.GetCompanies()) {
-            if (c.getName().toLowerCase().contains(param.getSearch().getValue().toLowerCase())
-                    || c.getAddress().toLowerCase().contains(param.getSearch().getValue().toLowerCase())
-                    || c.getTown().toLowerCase().contains(param.getSearch().getValue().toLowerCase())) {
-                companies.add(c); // add company that matches given search criterion
-            }
-        }
-        recordsFiltered = companies.size();  // number of companies that match search criterion should be returned
+        int recordsTotal = DataRepository.GetCompanies().size();  // total number of records (unfiltered)
+        int recordsFiltered = companies.size();                   // total number of records (filtered)
 
-        final int sortColumnIndex = param.getOrder().get(0).getColumn();
-        final int sortDirection = param.getOrder().get(0).getDir().equals("asc") ? -1 : 1;
-
-        Collections.sort(companies, new Comparator<Company>() {
-            @Override
-            public int compare(Company c1, Company c2) {
-                switch (sortColumnIndex) {
-                case 0:
-                    return c1.getName().compareTo(c2.getName()) * sortDirection;
-                case 1:
-                    return c1.getAddress().compareTo(c2.getAddress()) * sortDirection;
-                case 2:
-                    return c1.getTown().compareTo(c2.getTown()) * sortDirection;
-                }
-                return 0;
-            }
-        });
-
-        if (companies.size() < param.getStart() + param.getLength()) {
-            companies = companies.subList(param.getStart(), companies.size());
-        } else {
-            companies = companies.subList(param.getStart(), param.getStart() + param.getLength());
-        }
+        companies = PaginationUtil.logicalSort(param, companies);
+        companies = PaginationUtil.logicalLimit(param, companies);
 
         try {
             JQueryDataTablesReturnedDataModel<Company> returned = new JQueryDataTablesReturnedDataModel<>();

@@ -20,7 +20,12 @@
 			                      { "data": "name" },
 			                      { "data": "address" },
 			                      { "data": "town" }
-			                  ]
+			        ],
+			        "columnDefs": [
+	                      { "name": "name",    "targets": 0 },
+	                      { "name": "address", "targets": 1 },
+	                      { "name": "town",    "targets": 2 }
+			        ]
 			    });
 			});
         </script>

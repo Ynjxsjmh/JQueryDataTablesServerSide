@@ -16,6 +16,11 @@
                 "ajax": "CompanyGsonMatrix",
                 "processing": true,
                 "paginationType": "full_numbers",
+		        "columnDefs": [
+                      { "name": "name",    "targets": 0 },
+                      { "name": "address", "targets": 1 },
+                      { "name": "town",    "targets": 2 }
+		        ]
             });
         });
         </script>
