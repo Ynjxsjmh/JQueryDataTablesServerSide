@@ -25,6 +25,11 @@
     <servlet-name>CompanyGsonObjectsServlet</servlet-name>
     <servlet-class>jquery.datatables.controller.CompanyGsonObjectsServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>YadcfServlet</servlet-name>
+    <servlet-class>jquery.datatables.controller.YadcfServlet</servlet-class>
+  </servlet>
+
   <servlet-mapping>
     <servlet-name>CompanyJsonMatrixServlet</servlet-name>
     <url-pattern>/CompanyJsonMatrix</url-pattern>
@@ -36,5 +41,9 @@
   <servlet-mapping>
     <servlet-name>CompanyGsonObjectsServlet</servlet-name>
     <url-pattern>/CompanyGsonObjects</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>YadcfServlet</servlet-name>
+    <url-pattern>/Yadcf</url-pattern>
   </servlet-mapping>
 </web-app>
