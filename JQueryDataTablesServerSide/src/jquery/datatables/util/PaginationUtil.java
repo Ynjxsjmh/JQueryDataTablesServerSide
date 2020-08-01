@@ -12,7 +12,6 @@ import java.util.Map.Entry;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
 
-import jquery.datatables.model.Company;
 import jquery.datatables.model.JQueryDataTablesColumn;
 import jquery.datatables.model.JQueryDataTablesOrder;
 import jquery.datatables.model.JQueryDataTablesSentParamModel;
@@ -43,7 +42,7 @@ public class PaginationUtil {
     /** The Constant COMMA. */
     private static final String COMMA = " , ";
 
-    public static List<Company> logicalFilterCompanies(JQueryDataTablesSentParamModel param, List<Company> beforeFiltered) {
+    public static <T> List<T> logicalFilter(JQueryDataTablesSentParamModel param, List<T> beforeFiltered) {
         List<JQueryDataTablesColumn> columns = param.getColumns();
         Map<String, String> filterMap = new HashMap<>();
         Map<String, String> globalfilterMap = new HashMap<>();
@@ -59,21 +58,21 @@ public class PaginationUtil {
             }
         }
 
-        List<Company> afterFiltered = new ArrayList<>();
+        List<T> afterFiltered = new ArrayList<>();
 
-        for (Company company : beforeFiltered) {
+        for (T item : beforeFiltered) {
             if (!filterMap.isEmpty()) {
                 boolean flag = true;
                 Iterator<Entry<String, String>> fbit = filterMap.entrySet().iterator();
 
                 while (fbit.hasNext()) {
                     Map.Entry<String, String> pair =  fbit.next();
-                    String value = getFieldValueByFieldName(pair.getKey(), company);
+                    String value = getFieldValueByFieldName(pair.getKey(), item);
                     flag = flag && value.toLowerCase().contains(pair.getValue().toLowerCase());
                 }
 
                 if (flag) {
-                    afterFiltered.add(company);
+                    afterFiltered.add(item);
                 }
             }
         }
@@ -81,7 +80,7 @@ public class PaginationUtil {
         beforeFiltered = afterFiltered;
         afterFiltered = new ArrayList<>();
 
-        for (Company company : beforeFiltered) {
+        for (T item : beforeFiltered) {
             if (!globalfilterMap.isEmpty()) {
 
                 boolean flag = false;
@@ -89,12 +88,12 @@ public class PaginationUtil {
 
                 while (fbit.hasNext()) {
                     Map.Entry<String, String> pair =  fbit.next();
-                    String value = getFieldValueByFieldName(pair.getKey(), company);
+                    String value = getFieldValueByFieldName(pair.getKey(), item);
                     flag = flag || value.toLowerCase().contains(pair.getValue().toLowerCase());
                 }
 
                 if (flag) {
-                    afterFiltered.add(company);
+                    afterFiltered.add(item);
                 }
             }
         }
