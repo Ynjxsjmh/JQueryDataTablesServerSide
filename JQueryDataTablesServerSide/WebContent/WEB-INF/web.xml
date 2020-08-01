@@ -26,6 +26,10 @@
     <servlet-class>jquery.datatables.controller.CompanyGsonObjectsServlet</servlet-class>
   </servlet>
   <servlet>
+    <servlet-name>CompanyIndividualColumnSearchingServlet</servlet-name>
+    <servlet-class>jquery.datatables.controller.CompanyIndividualColumnSearchingServlet</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>YadcfServlet</servlet-name>
     <servlet-class>jquery.datatables.controller.YadcfServlet</servlet-class>
   </servlet>
@@ -41,6 +45,10 @@
   <servlet-mapping>
     <servlet-name>CompanyGsonObjectsServlet</servlet-name>
     <url-pattern>/CompanyGsonObjects</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>CompanyIndividualColumnSearchingServlet</servlet-name>
+    <url-pattern>/CompanyIndividualColumnSearching</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>YadcfServlet</servlet-name>
