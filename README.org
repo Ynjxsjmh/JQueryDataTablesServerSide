@@ -13,10 +13,12 @@
 #+FILETAGS: ::
 
 
-This Eclipse project is based on project from [[https://www.codeproject.com/Articles/359750/jQuery-DataTables-in-Java-Web-Applications][jQuery DataTables in Java Web Applications]]. I upgrade it to DataTables v1.10.
+This Eclipse project is based on project from [[https://www.codeproject.com/Articles/359750/jQuery-DataTables-in-Java-Web-Applications][jQuery DataTables in Java Web Applications]]. I upgrade it to DataTables v1.10. In the meantime, I add an example integrating with Yadcf plugin.
 
-There are also some similar project on Github:
+There are also some similar projects on Github:
 
 - [[https://github.com/davioooh/datatables-pagination][davioooh/datatables-pagination: Java server-side pagination utility for DataTables jQuery plug-in]]
 - [[https://github.com/pavansolapure/opencodez-samples/tree/master/spring-boot-datatable][opencodez-samples/spring-boot-datatable at master · pavansolapure/opencodez-samples]] 
 - [[https://github.com/vedmack/yadcf][vedmack/yadcf: Yet Another DataTables Column Filter (yadcf)]]
+
+[[./images/20200801_204140_nCeDmW.png]]
