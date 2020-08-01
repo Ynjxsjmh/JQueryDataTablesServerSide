@@ -1,12 +1,18 @@
 package jquery.datatables.util;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang3.builder.CompareToBuilder;
+
+import jquery.datatables.model.Company;
 import jquery.datatables.model.JQueryDataTablesColumn;
 import jquery.datatables.model.JQueryDataTablesOrder;
 import jquery.datatables.model.JQueryDataTablesSentParamModel;
@@ -36,6 +42,121 @@ public class PaginationUtil {
 
     /** The Constant COMMA. */
     private static final String COMMA = " , ";
+
+    public static List<Company> logicalFilterCompanies(JQueryDataTablesSentParamModel param, List<Company> beforeFiltered) {
+        List<JQueryDataTablesColumn> columns = param.getColumns();
+        Map<String, String> filterMap = new HashMap<>();
+        Map<String, String> globalfilterMap = new HashMap<>();
+
+        for (JQueryDataTablesColumn column : columns) {
+            if (column.isSearchable()) {
+                String columnName = column.getName();
+                String searchValue = column.getSearch().getValue();
+                filterMap.put(columnName, searchValue);
+
+                String globalSearchValue = param.getSearch().getValue();
+                globalfilterMap.put(columnName, globalSearchValue);
+            }
+        }
+
+        List<Company> afterFiltered = new ArrayList<>();
+
+        for (Company company : beforeFiltered) {
+            if (!filterMap.isEmpty()) {
+                boolean flag = true;
+                Iterator<Entry<String, String>> fbit = filterMap.entrySet().iterator();
+
+                while (fbit.hasNext()) {
+                    Map.Entry<String, String> pair =  fbit.next();
+                    String value = getFieldValueByFieldName(pair.getKey(), company);
+                    flag = flag && value.toLowerCase().contains(pair.getValue().toLowerCase());
+                }
+
+                if (flag) {
+                    afterFiltered.add(company);
+                }
+            }
+        }
+
+        beforeFiltered = afterFiltered;
+        afterFiltered = new ArrayList<>();
+
+        for (Company company : beforeFiltered) {
+            if (!globalfilterMap.isEmpty()) {
+
+                boolean flag = false;
+                Iterator<Entry<String, String>> fbit = globalfilterMap.entrySet().iterator();
+
+                while (fbit.hasNext()) {
+                    Map.Entry<String, String> pair =  fbit.next();
+                    String value = getFieldValueByFieldName(pair.getKey(), company);
+                    flag = flag || value.toLowerCase().contains(pair.getValue().toLowerCase());
+                }
+
+                if (flag) {
+                    afterFiltered.add(company);
+                }
+            }
+        }
+
+        return afterFiltered;
+    }
+
+    public static <T> List<T> logicalSort(JQueryDataTablesSentParamModel param, List<T> beforeSorted) {
+        List<JQueryDataTablesColumn> columns = param.getColumns();
+        List<JQueryDataTablesOrder> orders = param.getOrder();
+        Map<String, String> sortMap = new HashMap<>();
+
+        for (JQueryDataTablesOrder order : orders) {
+            int columnIndex= order.getColumn();
+            JQueryDataTablesColumn column = columns.get(columnIndex);
+
+            if (column.isOrderable()) {
+                String columnName = column.getName();
+                String columnDir = order.getDir();
+                sortMap.put(columnName, columnDir);
+            }
+        }
+
+        Collections.sort(beforeSorted, new Comparator<T>() {
+            public int compare(T one, T two) {
+                CompareToBuilder compToBuild = new CompareToBuilder();
+
+                Iterator<Entry<String, String>> sbit = sortMap.entrySet().iterator();
+
+                while (sbit.hasNext()) {
+                    Map.Entry<String, String> pair =  sbit.next();
+                    String fieldName = pair.getKey();
+                    String direction = pair.getValue();
+                    String fieldValue1 = getFieldValueByFieldName(fieldName, one);
+                    String fieldValue2 = getFieldValueByFieldName(fieldName, two);
+
+                    if(direction.toUpperCase().equals("ASC")) {
+                        compToBuild.append(fieldValue1, fieldValue2);
+                    }
+                    if(direction.toUpperCase().equals("DESC")) {
+                        compToBuild.append(fieldValue2, fieldValue1);
+                    }
+                }
+
+                return compToBuild.toComparison();
+            }
+        });
+
+        return beforeSorted;
+    }
+
+    public static <T> List<T> logicalLimit(JQueryDataTablesSentParamModel param, List<T> beforeLimited) {
+        List<T> afterLimited;
+
+        if (beforeLimited.size() < param.getStart() + param.getLength()) {
+            afterLimited = beforeLimited.subList(param.getStart(), beforeLimited.size());
+        } else {
+            afterLimited = beforeLimited.subList(param.getStart(), param.getStart() + param.getLength());
+        }
+
+        return afterLimited;
+    }
 
     public static String getFilterByClause(JQueryDataTablesSentParamModel param) {
         List<JQueryDataTablesColumn> columns = param.getColumns();
@@ -179,4 +300,41 @@ public class PaginationUtil {
 
         return String.format("LIMIT %d, %d", (pageNum-1)*pageSize, pageSize);
     }
+
+    /**
+     * 根据属性名获取属性值
+     *
+     * @param fieldName
+     * @param object
+     * @return
+     */
+    private static String getFieldValueByFieldName(String fieldName, Object object) {
+
+        Field field = null;
+        Class<?> clazz = object.getClass();
+
+        for (; clazz != Object.class; clazz = clazz.getSuperclass()) {
+            try {
+                field = clazz.getDeclaredField(fieldName);
+            } catch (NoSuchFieldException e) {
+                // 因为父类可能没有子类的属性，所以这里什么都不做
+            } catch (SecurityException e) {
+                e.printStackTrace();
+            }
+        }
+
+        field.setAccessible(true);
+
+        try {
+            Object value = field.get(object);
+            return String.valueOf(value);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 }
