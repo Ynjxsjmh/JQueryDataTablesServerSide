@@ -37,7 +37,7 @@ public class YadcfServlet extends HttpServlet {
         System.out.println("YadcfServlet.doGet() [param=" + new Gson().toJson(param) + "]");
 
         List<Company> companies = DataRepository.GetCompanies();
-        companies = PaginationUtil.logicalFilterCompanies(param, companies);
+        companies = PaginationUtil.logicalFilter(param, companies);
 
         int recordsTotal = DataRepository.GetCompanies().size();  // total number of records (unfiltered)
         int recordsFiltered = companies.size();                   // total number of records (filtered)

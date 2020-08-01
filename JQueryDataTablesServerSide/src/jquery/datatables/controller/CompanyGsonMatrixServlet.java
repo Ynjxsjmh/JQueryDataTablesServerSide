@@ -48,7 +48,7 @@ public class CompanyGsonMatrixServlet extends HttpServlet {
         JsonArray data = new JsonArray(); // data that will be shown in the table
 
         List<Company> companies = DataRepository.GetCompanies();
-        companies = PaginationUtil.logicalFilterCompanies(param, companies);
+        companies = PaginationUtil.logicalFilter(param, companies);
 
         int recordsTotal = DataRepository.GetCompanies().size();  // total number of records (unfiltered)
         int recordsFiltered = companies.size();                   // total number of records (filtered)
