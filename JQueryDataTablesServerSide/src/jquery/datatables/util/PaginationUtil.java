@@ -44,57 +44,51 @@ public class PaginationUtil {
 
     public static <T> List<T> logicalFilter(JQueryDataTablesSentParamModel param, List<T> beforeFiltered) {
         List<JQueryDataTablesColumn> columns = param.getColumns();
-        Map<String, String> filterMap = new HashMap<>();
-        Map<String, String> globalfilterMap = new HashMap<>();
-
-        for (JQueryDataTablesColumn column : columns) {
-            if (column.isSearchable()) {
-                String columnName = column.getName();
-                String searchValue = column.getSearch().getValue();
-                filterMap.put(columnName, searchValue);
-
-                String globalSearchValue = param.getSearch().getValue();
-                globalfilterMap.put(columnName, globalSearchValue);
-            }
-        }
 
         List<T> afterFiltered = new ArrayList<>();
 
         for (T item : beforeFiltered) {
-            if (!filterMap.isEmpty()) {
-                boolean flag = true;
-                Iterator<Entry<String, String>> fbit = filterMap.entrySet().iterator();
+            boolean isSatisfied = true;
 
-                while (fbit.hasNext()) {
-                    Map.Entry<String, String> pair =  fbit.next();
-                    String value = getFieldValueByFieldName(pair.getKey(), item);
-                    flag = flag && value.toLowerCase().contains(pair.getValue().toLowerCase());
-                }
+            for (JQueryDataTablesColumn column : columns) {
+                if (column.isSearchable()) {
+                    String columnName = column.getName();
+                    String searchValue = column.getSearch().getValue();
 
-                if (flag) {
-                    afterFiltered.add(item);
+                    String columnValue = getFieldValueByFieldName(columnName, item);
+
+                    isSatisfied = isSatisfied && columnValue.contains(searchValue);
                 }
+            }
+
+            if (isSatisfied) {
+                afterFiltered.add(item);
             }
         }
 
         beforeFiltered = afterFiltered;
         afterFiltered = new ArrayList<>();
 
+        /* Global filter
+         * If there exists at least one column contains the search value,
+         * the object should be returned.
+         */
+        String globalSearchValue = param.getSearch().getValue();
         for (T item : beforeFiltered) {
-            if (!globalfilterMap.isEmpty()) {
+            boolean isSatisfied = false;
 
-                boolean flag = false;
-                Iterator<Entry<String, String>> fbit = globalfilterMap.entrySet().iterator();
+            for (JQueryDataTablesColumn column : columns) {
+                if (column.isSearchable()) {
+                    String columnName = column.getName();
 
-                while (fbit.hasNext()) {
-                    Map.Entry<String, String> pair =  fbit.next();
-                    String value = getFieldValueByFieldName(pair.getKey(), item);
-                    flag = flag || value.toLowerCase().contains(pair.getValue().toLowerCase());
+                    String columnValue = getFieldValueByFieldName(columnName, item);
+
+                    isSatisfied = isSatisfied || columnValue.contains(globalSearchValue);
                 }
+            }
 
-                if (flag) {
-                    afterFiltered.add(item);
-                }
+            if (isSatisfied) {
+                afterFiltered.add(item);
             }
         }
 
