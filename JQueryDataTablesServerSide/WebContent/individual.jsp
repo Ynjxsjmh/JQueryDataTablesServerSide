@@ -56,7 +56,7 @@
 			                        );
 
 			                        column
-			                            .search( val )
+                                        .search( val ? '^'+val+'$' : '', true, false )
 			                            .draw();
 			                    } );
 
