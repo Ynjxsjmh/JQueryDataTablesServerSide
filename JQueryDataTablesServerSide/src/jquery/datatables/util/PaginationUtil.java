@@ -9,6 +9,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
 
@@ -54,10 +56,17 @@ public class PaginationUtil {
                 if (column.isSearchable()) {
                     String columnName = column.getName();
                     String searchValue = column.getSearch().getValue();
+                    boolean isRegex = column.getSearch().isRegex();
 
                     String columnValue = getFieldValueByFieldName(columnName, item);
 
-                    isSatisfied = isSatisfied && columnValue.contains(searchValue);
+                    if (isRegex) {
+                        Pattern pattern = Pattern.compile(searchValue, Pattern.CASE_INSENSITIVE);
+                        Matcher matcher = pattern.matcher(columnValue);
+                        isSatisfied = isSatisfied && matcher.find();
+                    } else {
+                        isSatisfied = isSatisfied && columnValue.contains(searchValue);
+                    }
                 }
             }
 
@@ -74,6 +83,7 @@ public class PaginationUtil {
          * the object should be returned.
          */
         String globalSearchValue = param.getSearch().getValue();
+        boolean isGlobalRegex = param.getSearch().isRegex();
         for (T item : beforeFiltered) {
             boolean isSatisfied = false;
 
@@ -83,7 +93,13 @@ public class PaginationUtil {
 
                     String columnValue = getFieldValueByFieldName(columnName, item);
 
-                    isSatisfied = isSatisfied || columnValue.contains(globalSearchValue);
+                    if (isGlobalRegex) {
+                        Pattern pattern = Pattern.compile(globalSearchValue, Pattern.CASE_INSENSITIVE);
+                        Matcher matcher = pattern.matcher(columnValue);
+                        isSatisfied = isSatisfied || matcher.find();
+                    } else {
+                        isSatisfied = isSatisfied || columnValue.contains(globalSearchValue);
+                    }
                 }
             }
 
