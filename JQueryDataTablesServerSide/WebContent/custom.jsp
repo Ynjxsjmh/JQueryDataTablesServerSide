@@ -15,6 +15,10 @@
                     "serverSide": true,
                     "ajax": {
                         "url": "CompanyIndividualColumnSearching",
+                        "data": function ( d ) {
+                            d.company = $("#company_filter").val();
+                            d['with space'] = $("#company_filter").val();
+                        },
                     },
                     "processing": true,
                     "paginationType": "full_numbers",
@@ -50,6 +54,10 @@
                 $('input.address_filter').on( 'keyup', function () {
                     table.column(1).search( this.value ).draw();
                 } );
+
+                $('input.company_filter').on( 'keyup', function () {
+                    table.draw();
+                } );
             });
         </script>
     </head>
@@ -59,6 +67,7 @@
 
             <div id="demo_jui">
                 <div>
+                    <p>Company Search: <input type="text" class="company_filter" id="company_filter"></p>
                     <p>Address Search: <input type="text" class="address_filter" id="address_filter"></p>
                     <span id="town"></span>
                 </div>
@@ -81,8 +90,22 @@
                         </tr>
                     </tfoot>
                 </table>
-            </div>
 
+                <div>
+                    Related DataTables document:
+                    <ul>
+                        <li>
+                            <a href="https://datatables.net/reference/option/ajax">ajax</a>
+                        </li>
+                        <li>
+                            <a href="https://datatables.net/reference/api/draw()">draw()</a>
+                        </li>
+                        <li>
+                            <a href="https://datatables.net/examples/api/regex.html">Search API (regular expressions)</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </body>
 </html>
